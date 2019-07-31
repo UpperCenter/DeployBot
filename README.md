@@ -6,7 +6,7 @@ Please Note that steps / commands will almost certainly vary depending on your L
 
 # How to use:
 
-Just clone the repo onto your Ubuntu / Debian VPS with git clone 
+Just clone the repo onto your Ubuntu / Debian VPS with ``git clone https://github.com/UpperCenter/DeployBot.git``
 
 # To-Do:
 
