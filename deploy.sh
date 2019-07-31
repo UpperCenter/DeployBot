@@ -10,7 +10,7 @@
 
 # Check the "licence" file for more information.
 
-#!/bin/bash
+!/bin/bash
 
 sudo apt update
 
