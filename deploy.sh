@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #------------------------------------------------------#
 # Made by UpperCenter (https://twitter.com/UpperCenter)
 #------------------------------------------------------#
@@ -10,8 +12,6 @@
 
 # Check the "licence" file for more information.
 
-#!/bin/bash
-
 # exit when any command fails
 set -e
 echo ""
@@ -21,8 +21,8 @@ echo ""
 sudo apt update
 /bin/echo -e "\e[1;32mFull System Update Complete!\e[0m"
 
-# Wait 5 Seconds
-sleep 5s
+# Wait 3 Seconds
+sleep 3s
 
 echo ""
 
@@ -131,5 +131,86 @@ echo ""
 curl -I 127.0.0.1
 /bin/echo -e "\e[1;32mStatus 1 / Verified!\e[0m"
 
-# Wait 2 Seconds
-sleep 2s
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+# Downloading MySQL Server 8.0
+/bin/echo -e "\e[1;33mDownloading MySQL 8.0 .deb File...\e[0m"
+curl -OL https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+/bin/echo -e "\e[1;32mFile Downloaded!\e[0m"
+
+echo ""
+
+# Installing MySQL .deb File
+/bin/echo -e "\e[1;33mInstalling MySQL .deb File...\e[0m"
+figlet LEAVE DEFAULTS!
+sleep 6s
+sudo dpkg -i mysql-apt-config*
+/bin/echo -e "\e[1;32mFile Installed!\e[0m"
+
+echo ""
+
+# Signing MySQL Key
+/bin/echo -e "\e[1;33mSigning The MySQL APT Key...\e[0m"
+sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 8C718D3B5072E1F5
+/bin/echo -e "\e[1;32mKey Signature Added!\e[0m"
+
+echo ""
+
+# Wait 3 Seconds
+sleep 3s
+
+# Full System Update
+/bin/echo -e "\e[1;33mPerforming System Update...\e[0m"
+sudo apt update
+/bin/echo -e "\e[1;32mUpdate Complete!\e[0m"
+
+echo ""
+
+# Removing DEP File
+/bin/echo -e "\e[1;33mRemoving Downloaded .deb File...\e[0m"
+sudo rm mysql-apt-config*
+/bin/echo -e "\e[1;32mRemove Complete!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+# INSTALLING MYSQL
+/bin/echo -e "\e[1;33mINSTALLING MYSQL...\e[0m"
+sudo apt install mysql-server -y
+figlet MYSQL INSTALLED!!! | lolcat
+
+echo ""
+echo ""
+
+# Checking MySQL Serice Status
+/bin/echo -e "\e[1;33mChecking MySQL Service Status...\e[0m"
+sudo systemctl status mysql
+/bin/echo -e "\e[1;32mStatus 1!\e[0m"
+
+echo ""
+
+# Showing MySQL Version
+/bin/echo -e "\e[1;33mChecking MySQL Version...\e[0m"
+echo ""
+/bin/echo -e "\e[1;31mENTER ROOT PASSWORD!!\e[0m"
+sleep 3
+mysqladmin -u root -p version
+/bin/echo -e "\e[1;32mVersion Confirmed!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s
+
+echo ""
+
+# Securing MySQL
+/bin/echo -e "\e[1;33mStarting Secure MySQL Installer...\e[0m"
+echo ""
+/bin/echo -e "\e[1;31mENTER ROOT PASSWORD!!\e[0m"
+sleep 3
+sudo mysql_secure_installation
+/bin/echo -e "\e[1;32mSecure Instalation Complete!\e[0m"
