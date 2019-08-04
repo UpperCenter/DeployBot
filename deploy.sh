@@ -230,11 +230,28 @@ sudo mysql_secure_installation
 # Installing PHP & Requirements
 ################################
 
+echo ""
+
 /bin/echo -e "\e[1;33mInstalling PHP 7.x And Requirements...\e[0m"
 sleep 5s
 sudo apt install php-fpm php-mysql php-mbstring
-/bin/echo -e "\e[1;32m Instalation Complete!\e[0m"
+/bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 sleep 5s
 
+
+/bin/echo -e "\e[1;33mChecking PHP Version...\e[0m"
+php -v | lolcat
+echo ""
+/bin/echo -e "\e[1;32mVersion Verified!\e[0m"
+
+echo ""
+
 /bin/echo -e "\e[1;33mDownloading Private GIT Configs...\e[0m"
-git clone 
+/bin/echo -e "\e[1;31mENTER GITHUB PASSWORD!!\e[0m"
+sleep 3
+git clone https://github.com/UpperCenter/Configs.git
+echo ""
+/bin/echo -e "\e[1;32mDownload Complete!\e[0m"
+
+echo ""
+
