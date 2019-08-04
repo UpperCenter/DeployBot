@@ -42,8 +42,15 @@ sudo apt autoremove -y
 sleep 5s
 echo ""
 
+/bin/echo -e "\e[1;33mChanging Timezone to Eastern...\e[0m"
+sudo dpkg-reconfigure tzdata
+/bin/echo -e "\e[1;32mTimezone Configured!\e[0m"
+
+echo ""
+
 # Install Some less Important Tools
 /bin/echo -e "\e[1;33mAInstalling Additional Tools...\e[0m"
+sleep 2s
 sudo apt install figlet lolcat update-motd zip unzip -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 
@@ -136,6 +143,10 @@ echo ""
 # Wait 5 Seconds
 sleep 5s
 
+##########################
+# MySQL Instalation Section
+##########################
+
 # Downloading MySQL Server 8.0
 /bin/echo -e "\e[1;33mDownloading MySQL 8.0 .deb File...\e[0m"
 curl -OL https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
@@ -214,3 +225,16 @@ echo ""
 sleep 3
 sudo mysql_secure_installation
 /bin/echo -e "\e[1;32mSecure Instalation Complete!\e[0m"
+
+################################
+# Installing PHP & Requirements
+################################
+
+/bin/echo -e "\e[1;33mInstalling PHP 7.x And Requirements...\e[0m"
+sleep 5s
+sudo apt install php-fpm php-mysql php-mbstring
+/bin/echo -e "\e[1;32m Instalation Complete!\e[0m"
+sleep 5s
+
+/bin/echo -e "\e[1;33mDownloading Private GIT Configs...\e[0m"
+git clone 
