@@ -156,7 +156,7 @@ echo ""
 
 # Installing MySQL .deb File
 /bin/echo -e "\e[1;33mInstalling MySQL .deb File...\e[0m"
-figlet LEAVE DEFAULTS!
+figlet LEAVE DEFAULTS! | lolcat
 sleep 6s
 sudo dpkg -i mysql-apt-config*
 /bin/echo -e "\e[1;32mFile Installed!\e[0m"
@@ -234,7 +234,7 @@ echo ""
 
 /bin/echo -e "\e[1;33mInstalling PHP 7.x And Requirements...\e[0m"
 sleep 5s
-sudo apt install php-fpm php-mysql php-mbstring
+sudo apt install php-fpm php-mysql php-mbstring -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 sleep 5s
 
@@ -247,11 +247,41 @@ echo ""
 echo ""
 
 /bin/echo -e "\e[1;33mDownloading Private GIT Configs...\e[0m"
-/bin/echo -e "\e[1;31mENTER GITHUB PASSWORD!!\e[0m"
+echo ""
+sleep 5s
+/bin/echo -e "\e[1;33mPlease Input Config URL:\e[0m"
+echo "-->"
+read url1
+echo ""
 sleep 3
-git clone https://github.com/UpperCenter/Configs.git
+git clone $url1
 echo ""
 /bin/echo -e "\e[1;32mDownload Complete!\e[0m"
 
 echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+# Move Downloaded PHP.ini To Correct Folder
+/bin/echo -e "\e[1;33mMoving PHP.ini To Correct Folder...\e[0m"
+sleep 5s
+sudo mv Configs/php.ini /etc/php/7.2/fpm/php.ini
+/bin/echo -e "\e[1;32mTransfer Complete!\e[0m"
 echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+/bin/echo -e "\e[1;33mRestarting PHP Services...\e[0m"
+sudo systemctl restart php7.2-fpm.service
+/bin/echo -e "\e[1;32mService Restarted!\e[0m"
+echo ""
+
+/bin/echo -e "\e[1;33mChecking New PHP Status...\e[0m"
+sudo systemctl status php7.2-fpm.service
+echo ""
+/bin/echo -e "\e[1;32mCheck Complete!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s
