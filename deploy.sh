@@ -52,7 +52,7 @@ echo ""
 # Install Some less Important Tools
 /bin/echo -e "\e[1;33mAInstalling Additional Tools...\e[0m"
 sleep 2s
-sudo apt install figlet lolcat update-motd zip unzip -y
+sudo apt install figlet lolcat update-motd zip unzip fail2ban -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 
 echo ""
@@ -322,3 +322,115 @@ echo ""
 nginx -t | systemctl restart nginx.service
 /bin/echo -e "\e[1;32mServices Restarted & All Tests Passed!\e[0m"
 sleep 8s
+
+echo ""
+
+# Delete Old Configs Folder
+/bin/echo -e "\e[1;33mRemoving Old Config Folder...\e[0m"
+sudo rm -rf Configs
+/bin/echo -e "\e[1;32mFolder Removed!\e[0m"
+
+echo ""
+
+# Downloading FoM Source Code
+/bin/echo -e "\e[1;33mDownloading MirrorWood Source Code...\e[0m"
+echo ""
+sleep 5s
+/bin/echo -e "\e[1;33mPlease Source Code Config URL:\e[0m"
+echo "-->"
+read url2
+echo ""
+sleep 3
+git clone $url2
+echo ""
+/bin/echo -e "\e[1;32mDownload Complete!\e[0m"
+
+echo ""
+
+# Moving MirrorWood Files To Correct Location
+/bin/echo -e "\e[1;33mMoving Source Code...\e[0m"
+echo ""
+sudo mkdir -p /var/www/laravel
+sleep 2s
+sudo mv -v MirrorWood/* /var/www/laravel/
+sleep 5s
+/bin/echo -e "\e[1;32mMove Complete!\e[0m"
+
+echo ""
+
+# Reloading Nginx
+/bin/echo -e "\e[1;33mReloading Nginx...\e[0m"
+sudo systemctl restart nginx.service
+/bin/echo -e "\e[1;32mRestart Complete!\e[0m"
+
+echo ""
+
+# Downloading Private MOTD Repo
+/bin/echo -e "\e[1;33mDownloading Private GIT MOTD Repo...\e[0m"
+echo ""
+sleep 5s
+/bin/echo -e "\e[1;33mPlease Input Config URL:\e[0m"
+echo "-->"
+read url3
+echo ""
+sleep 3
+git clone $url3
+echo ""
+/bin/echo -e "\e[1;32mDownload Complete!\e[0m"
+
+echo ""
+
+# Removing Old MOTD Files
+/bin/echo -e "\e[1;33mRemoving Old MOTD Files...\e[0m"
+sudo rm -rf /etc/update-motd.d/*
+/bin/echo -e "\e[1;32mDelete Complete!\e[0m"
+
+echo ""
+
+# Moving New MOTD Files To Folder
+/bin/echo -e "\e[1;33mAdding New MOTD Files To System...\e[0m"
+sudo mv -v Update-MOTD/* /etc/update-motd.d/
+/bin/echo -e "\e[1;32mMove Complete!\e[0m"
+
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+# Testing Configuration
+/bin/echo -e "\e[1;33mUpdating MOTD...\e[0m"
+clear
+update-motd
+echo ""
+/bin/echo -e "\e[1;32mUpdate Done!\e[0m"
+
+echo ""
+
+# Create Temp SWAP File
+/bin/echo -e "\e[1;33mCreating Temporary SWAP File...\e[0m"
+sudo fallocate -l 8G /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo ""
+/bin/echo -e "\e[1;32mSWAP Created!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s
+
+# Install Composer
+/bin/echo -e "\e[1;33mInstalling Composer...\e[0m"
+cd ~
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+/bin/echo -e "\e[1;32mComposer Installed!\e[0m"
+
+echo ""
+
+/bin/echo -e "\e[1;33mChecking Composer Status...\e[0m"
+clear
+composer
+echo ""
+/bin/echo -e "\e[1;32mComposer Verified!\e[0m"
+
+sleep 5s
