@@ -405,6 +405,9 @@ update-motd
 echo ""
 /bin/echo -e "\e[1;32mUpdate Done!\e[0m"
 
+# Wait 8 Seconds
+sleep 8s
+
 echo ""
 
 # Create Temp SWAP File
@@ -420,6 +423,7 @@ sleep 5s
 
 # Install Composer
 /bin/echo -e "\e[1;33mInstalling Composer...\e[0m"
+clear
 cd ~
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
