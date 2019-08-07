@@ -42,7 +42,8 @@ sudo apt autoremove -y
 sleep 5s
 echo ""
 
-/bin/echo -e "\e[1;33mChanging Timezone to Eastern...\e[0m"
+# Changing Timezone
+/bin/echo -e "\e[1;33mChanging Timezone...\e[0m"
 sudo dpkg-reconfigure tzdata
 /bin/echo -e "\e[1;32mTimezone Configured!\e[0m"
 
@@ -232,20 +233,23 @@ sudo mysql_secure_installation
 
 echo ""
 
+# Installing PHP from APT
 /bin/echo -e "\e[1;33mInstalling PHP 7.x And Requirements...\e[0m"
 sleep 5s
 sudo apt install php-fpm php-mysql php-mbstring -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 sleep 5s
 
-
+# Checking Installed PHP Version
 /bin/echo -e "\e[1;33mChecking PHP Version...\e[0m"
+echo ""
 php -v | lolcat
 echo ""
 /bin/echo -e "\e[1;32mVersion Verified!\e[0m"
 
 echo ""
 
+# Downloading Private GIT Repositories
 /bin/echo -e "\e[1;33mDownloading Private GIT Configs...\e[0m"
 echo ""
 sleep 5s
@@ -273,11 +277,13 @@ echo ""
 # Wait 5 Seconds
 sleep 5s
 
+# Restarting PHP Services
 /bin/echo -e "\e[1;33mRestarting PHP Services...\e[0m"
 sudo systemctl restart php7.2-fpm.service
 /bin/echo -e "\e[1;32mService Restarted!\e[0m"
 echo ""
 
+# Checking PHP Status
 /bin/echo -e "\e[1;33mChecking New PHP Status...\e[0m"
 sudo systemctl status php7.2-fpm.service
 echo ""
@@ -285,3 +291,34 @@ echo ""
 
 # Wait 5 Seconds
 sleep 5s
+
+# Creating Nginx Log Folders
+/bin/echo -e "\e[1;33mCreating Nginx Log Folders...\e[0m"
+sudo mkdir /var/www
+sleep 2s
+sudo mkdir /var/www/nginx
+/bin/echo -e "\e[1;32mFolders Created!\e[0m"
+echo ""
+
+# Wait 3 Seconds
+sleep 3s
+
+# Move Downloaded Nginx Configs To Correct Folder
+/bin/echo -e "\e[1;33mMoving Nginx Configs To Correct Folders...\e[0m"
+sleep 5s
+sudo mv Configs/nginx.conf /etc/nginx/nginx.conf
+echo ""
+/bin/echo -e "\e[1;32mNginx.conf Done!\e[0m"
+sudo mv Configs/mirrorwood.conf /etc/nginx/conf.d/mirrorwood.conf
+echo ""
+/bin/echo -e "\e[1;32mMirrorWood.conf Done!\e[0m"
+echo ""
+/bin/echo -e "\e[1;32mAll Transfers Complete!\e[0m"
+sleep 6s
+echo ""
+
+# Move Downloaded Nginx Configs To Correct Folder
+/bin/echo -e "\e[1;33mTesting & Restarting Nginx Services...\e[0m"
+nginx -t | systemctl restart nginx.service
+/bin/echo -e "\e[1;32mServices Restarted & All Tests Passed!\e[0m"
+sleep 8s
