@@ -50,7 +50,7 @@ sudo dpkg-reconfigure tzdata
 echo ""
 
 # Install Some less Important Tools
-/bin/echo -e "\e[1;33mAInstalling Additional Tools...\e[0m"
+/bin/echo -e "\e[1;33mInstalling Additional Tools...\e[0m"
 sleep 2s
 sudo apt install figlet lolcat update-motd zip unzip fail2ban -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
@@ -212,6 +212,7 @@ echo ""
 /bin/echo -e "\e[1;31mENTER ROOT PASSWORD!!\e[0m"
 sleep 3
 mysqladmin -u root -p version
+sleep 3
 /bin/echo -e "\e[1;32mVersion Confirmed!\e[0m"
 
 # Wait 5 Seconds
@@ -226,6 +227,27 @@ echo ""
 sleep 3
 sudo mysql_secure_installation
 /bin/echo -e "\e[1;32mSecure Instalation Complete!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
+
+# Restore MySQL Backup
+/bin/echo -e "\e[1;33mRestoring MySQL Database & Tables...\e[0m"
+echo ""
+sleep 2s
+mysqladmin -u root -p create infern_data
+echo ""
+/bin/echo -e "\e[1;33mDatabase Created...\e[0m"
+sleep 2s
+mysql -u root -p infern_data < SQL-Backup.sql
+echo ""
+/bin/echo -e "\e[1;32mRestore Complete!\e[0m"
+sleep 2s 
+
+# Restart MySQL Server
+echo ""
 
 ################################
 # Installing PHP & Requirements
@@ -369,7 +391,7 @@ echo ""
 /bin/echo -e "\e[1;33mDownloading Private GIT MOTD Repo...\e[0m"
 echo ""
 sleep 5s
-/bin/echo -e "\e[1;33mPlease Input Config URL:\e[0m"
+/bin/echo -e "\e[1;33mPlease Input MirrorWood URL:\e[0m"
 echo "-->"
 read url3
 echo ""
