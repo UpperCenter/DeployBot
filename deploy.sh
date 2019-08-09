@@ -662,25 +662,25 @@ echo ""
 echo ""
 sleep 10
 echo "*/30 * * * *  php /var/www/crons/run_scours.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "*/30 * * * *  php /var/www/crons/run_creche.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "*/5 * * * *  php /var/www/crons/run_battle.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "00 00 * * *  php /var/www/crons/run_contests.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "59 23 * * *  php /var/www/crons/run_raffle_clicks.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "59 23 * * sat  php /var/www/crons/run_clans.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "10 * * * *  php /var/www/crons/run_areas.php > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "10 3 * * *  php  /usr/local/bin/phpbu --configuration=/var/www/mysql-backup/backup.xml > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "0 2 * * * php /var/www/crons/run_weather > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 echo "0 19 * * * php /var/www/crons/run_weather > /var/www/crons/logs/errors.log 2>&1"
-
+echo ""
 sleep 10s
 echo ""
 crontab -e
