@@ -480,48 +480,18 @@ echo ""
 /bin/echo -e "\e[1;32mPHPMyAdmin Downloaded & Installed!\e[0m"
 
 cd
-
-# Moving PHPMyAdmin To Laravel Folder
-/bin/echo -e "\e[1;33mMaking PHPMyAdmin Usable With Laravel...\e[0m"
-sudo ln -s /usr/share/phpmyadmin /var/www/laravel/public
-/bin/echo -e "\e[1;32mPHPMyAdmin Available!\e[0m"
-
-echo ""
-
-# Changing PHPMyAdmin Access URL
-# /bin/echo -e "\e[1;33mChanging PHPMyAdmin Access URL...\e[0m"
-# cd /var/www/laravel/public
-# /bin/echo -e "\e[1;33mPlease Choose PHPMyAdmin URL To Use...\e[0m"
-# echo "-->"
-# read $phpma
-# sudo mv phpmyadmin $phpma
-# /bin/echo -e "\e[1;32mURL Changed!\e[0m"
-
-# echo ""
-
-# Disabling Passwordless Login
-# /bin/echo -e "\e[1;33mDisabling PHPMyAdmin Root Access...\e[0m"
-# sudo nano /etc/phpmyadmin/conf.d/pma_secure.php
-# /bin/echo -e "\e[1;32mPasswordless Login Disabled!\e[0m"
-
 echo ""
 
 # Setting Security Page
 /bin/echo -e "\e[1;33mCreating PHPMA Password...\e[0m"
-htpasswd /etc/nginx/.htpasswd infernette
+htpasswd -c /etc/nginx/.htpasswd infernette
 /bin/echo -e "\e[1;32mPassword Created!\e[0m"
 
 echo ""
 
-# Wait 10 Seconds
-sleep 10s 
+# Wait 5 Seconds
+sleep 5s 
 
-# Setting Security Page
-/bin/echo -e "\e[1;33mCreating Secure Login...\e[0m"
-/bin/echo -e "\e[1;33mPaste OpenSSL Key Here...\e[0m"
-sleep 5s
-sudo nano /etc/nginx/pma_pass
-/bin/echo -e "\e[1;32mCreated!\e[0m"
 
 echo ""
 # Create Temp SWAP File
@@ -662,23 +632,20 @@ php artisan config:cache
 
 /bin/echo -e "\e[1;32mAPP KEY Added & Cache Cleared!\e[0m"
 
+echo ""
+
 # Downloading Cron Files
-/bin/echo -e "\e[1;33mGenerating APP KEY Again Because It Never Works 1st Time...\e[0m"
+/bin/echo -e "\e[1;33mDownloading Crons...\e[0m"
+sudo mkdir -p /var/www/crons
+git clone https://github.com/UpperCenter/Crons.git
 echo ""
-/bin/echo -e "\e[1;31mEnter Password!!\e[0m"
-cd
-echo "-->"
-read $cron
-git clone $cron
-echo ""
-/bin/echo -e "\e[1;32mCrons Downloaded!\e[0m"
+/bin/echo -e "\e[1;32mDownload Complete!\e[0m"
 
 echo ""
 
 # Creating Cron Folder & Moving
 /bin/echo -e "\e[1;33mCreating Cron Folders & Moving...\e[0m"
-sudo mkdir -p /var/www/crons
-sudo mv Crons/* /var/www/crons/*
+sudo mv Crons/* /var/www/crons/
 /bin/echo -e "\e[1;32mCrons Moved!\e[0m"
 
 echo ""
