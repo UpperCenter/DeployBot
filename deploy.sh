@@ -311,6 +311,8 @@ sudo systemctl status php7.2-fpm.service
 echo ""
 /bin/echo -e "\e[1;32mCheck Complete!\e[0m"
 
+echo ""
+
 # Wait 5 Seconds
 sleep 5s
 
@@ -376,6 +378,7 @@ sudo mkdir -p /var/www/laravel
 sleep 2s
 sudo mv -v MirrorWood/* /var/www/laravel/
 sleep 5s
+echo ""
 /bin/echo -e "\e[1;32mMove Complete!\e[0m"
 
 echo ""
@@ -391,7 +394,7 @@ echo ""
 /bin/echo -e "\e[1;33mDownloading Private GIT MOTD Repo...\e[0m"
 echo ""
 sleep 5s
-/bin/echo -e "\e[1;33mPlease Input MirrorWood URL:\e[0m"
+/bin/echo -e "\e[1;33mPlease Input MOTD URL:\e[0m"
 echo "-->"
 read url3
 echo ""
@@ -459,4 +462,32 @@ composer
 echo ""
 /bin/echo -e "\e[1;32mComposer Verified!\e[0m"
 
+# Wait 5 Seconds
 sleep 5s
+
+echo ""
+
+# Moving To Laravel Folder
+/bin/echo -e "\e[1;33mMoving to /var/www/laravel...\e[0m"
+cd /var/www/laravel/
+/bin/echo -e "\e[1;32mDone!\e[0m"
+sleep 2s
+
+echo ""
+
+# Make .env File
+/bin/echo -e "\e[1;33mMake .ENV File...\e[0m"
+sudo mv Env-Example .env
+/bin/echo -e "\e[1;32m.env File Created!\e[0m"
+
+echo ""
+
+# Installing Composer
+/bin/echo -e "\e[1;33mInstalling Composer...\e[0m"
+echo ""
+composer install --no-dev
+echo ""
+/bin/echo -e "\e[1;32mComposer Dependencies Installed!\e[0m"
+
+# Wait 8 Seconds
+sleep 8s 
