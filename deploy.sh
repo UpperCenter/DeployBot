@@ -626,15 +626,36 @@ echo ""
 /bin/echo -e "\e[1;33mChanging PHPMyAdmin Access URL...\e[0m"
 cd /var/www/laravel/public
 /bin/echo -e "\e[1;33mPlease Choose PHPMyAdmin URL To Use...\e[0m"
+echo "-->"
 read phpma
 sudo mv phpmyadmin $phpma
 /bin/echo -e "\e[1;32mURL Changed!\e[0m"
 
-# Wait 5 Seconds
-sleep 5s 
+echo ""
+
+# Disabling Passwordless Login
+/bin/echo -e "\e[1;33mDisabling PHPMyAdmin Root Access...\e[0m"
+sudo nano /etc/phpmyadmin/conf.d/pma_secure.php
+/bin/echo -e "\e[1;32mPasswordless Login Disabled!\e[0m"
+
+echo ""
+
+# Setting Security Page
+/bin/echo -e "\e[1;33mCreating PHPMA OpenSSL Password...\e[0m"
+openssl passwd
+/bin/echo -e "\e[1;32mPassword Created!\e[0m"
+
+echo ""
+
+# Wait 10 Seconds
+sleep 10s 
+
+sudo nano /etc/nginx/pma_pass
 
 # Adding APP KEY Again Because Fuck Me Thats Why
 /bin/echo -e "\e[1;33mGenerating APP KEY Again Because It Never Works 1st Time...\e[0m"
+cd
+cd /var/www/laravel
 php artisan key:generate
 echo ""
 php artisan config:clear
