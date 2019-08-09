@@ -241,6 +241,7 @@ mysqladmin -u root -p create infern_data
 echo ""
 /bin/echo -e "\e[1;33mDatabase Created...\e[0m"
 sleep 2s
+echo ""
 mysql -u root -p infern_data < SQL-Backup.sql
 echo ""
 /bin/echo -e "\e[1;32mRestore Complete!\e[0m"
@@ -401,13 +402,7 @@ echo ""
 # Downloading Private MOTD Repo
 /bin/echo -e "\e[1;33mDownloading Private GIT MOTD Repo...\e[0m"
 echo ""
-sleep 5s
-/bin/echo -e "\e[1;33mPlease Input MOTD URL:\e[0m"
-echo "-->"
-read url3
-echo ""
-sleep 3
-git clone $url3
+git clone https://github.com/UpperCenter/Update-MOTD.git
 echo ""
 /bin/echo -e "\e[1;32mDownload Complete!\e[0m"
 
@@ -495,13 +490,6 @@ echo ""
 sudo mv Env-Example .env
 /bin/echo -e "\e[1;32m.env File Created!\e[0m"
 
-echo ""
-
-# Clearing Artisan Cache
-/bin/echo -e "\e[1;33mClearing Artisan Cache...\e[0m"
-php artisan config:cache
-echo ""
-/bin/echo -e "\e[1;32mCache Cleared!\e[0m"
 echo ""
 
 # Wait 5 Seconds
