@@ -246,8 +246,16 @@ echo ""
 /bin/echo -e "\e[1;32mRestore Complete!\e[0m"
 sleep 2s 
 
-# Restart MySQL Server
 echo ""
+
+# Add MySQL User Details
+/bin/echo -e "\e[1;33mAdd New User & Rights...\e[0m"
+sleep 2
+echo ""
+mysql -u root -p
+echo ""
+sleep 2
+/bin/echo -e "\e[1;32mUser Created!\e[0m"
 
 ################################
 # Installing PHP & Requirements
@@ -475,12 +483,29 @@ sleep 2s
 
 echo ""
 
+# Remove Vendor File
+/bin/echo -e "\e[1;33mRemoving Vendor File...\e[0m"
+sudo rm -rf vendor/
+/bin/echo -e "\e[1;33mFile Deleted...\e[0m"
+
+echo ""
+
 # Make .env File
 /bin/echo -e "\e[1;33mMake .ENV File...\e[0m"
 sudo mv Env-Example .env
 /bin/echo -e "\e[1;32m.env File Created!\e[0m"
 
 echo ""
+
+# Clearing Artisan Cache
+/bin/echo -e "\e[1;33mClearing Artisan Cache...\e[0m"
+php artisan config:cache
+echo ""
+/bin/echo -e "\e[1;32mCache Cleared!\e[0m"
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
 
 # Installing Composer
 /bin/echo -e "\e[1;33mInstalling Composer...\e[0m"
@@ -489,5 +514,46 @@ composer install --no-dev
 echo ""
 /bin/echo -e "\e[1;32mComposer Dependencies Installed!\e[0m"
 
-# Wait 8 Seconds
-sleep 8s 
+# Wait 5 Seconds
+sleep 5s 
+
+echo ""
+
+# Setting Folder Permissions
+/bin/echo -e "\e[1;33mSetting Folder Permissions...\e[0m"
+sudo chown -R :www-data /var/www/laravel
+sudo chmod -R 775 /var/www/laravel/storage
+sudo chmod -R 775 /var/www/laravel/bootstrap/cache
+/bin/echo -e "\e[1;32mPermissions Set!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s 
+
+# Restarting Nginx Services
+/bin/echo -e "\e[1;33mRestarting Services...\e[0m"
+systemctl restart nginx.service
+systemctl restart php7.2-fpm.service
+/bin/echo -e "\e[1;32mServices Restarted!\e[0m"
+
+# Generating Enc Keys
+echo ""
+/bin/echo -e "\e[1;33mGenerating New Encryption Key...\e[0m"
+echo ""
+php artisan key:generate
+/bin/echo -e "\e[1;32mKey Created!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s 
+
+echo ""
+
+# Clearing Artisan Cache
+/bin/echo -e "\e[1;33mClearing Artisan Cache...\e[0m"
+php artisan config:cache
+echo ""
+/bin/echo -e "\e[1;32mCache Cleared!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s 
