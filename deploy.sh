@@ -52,7 +52,7 @@ echo ""
 # Install Some less Important Tools
 /bin/echo -e "\e[1;33mInstalling Additional Tools...\e[0m"
 sleep 2s
-sudo apt install figlet lolcat update-motd zip unzip fail2ban -y
+sudo apt install figlet lolcat update-motd zip unzip fail2ban apache2-utils -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 
 echo ""
@@ -224,7 +224,6 @@ echo ""
 /bin/echo -e "\e[1;33mStarting Secure MySQL Installer...\e[0m"
 echo ""
 /bin/echo -e "\e[1;31mENTER ROOT PASSWORD!!\e[0m"
-sleep 3
 sudo mysql_secure_installation
 /bin/echo -e "\e[1;32mSecure Instalation Complete!\e[0m"
 
@@ -236,11 +235,9 @@ sleep 5s
 # Restore MySQL Backup
 /bin/echo -e "\e[1;33mRestoring MySQL Database & Tables...\e[0m"
 echo ""
-sleep 2s
 mysqladmin -u root -p create infern_data
 echo ""
 /bin/echo -e "\e[1;33mDatabase Created...\e[0m"
-sleep 2s
 echo ""
 mysql -u root -p infern_data < SQL-Backup.sql
 echo ""
@@ -265,7 +262,7 @@ sleep 2
 echo ""
 
 # Installing PHP from APT
-/bin/echo -e "\e[1;33mInstalling PHP 7.x And Requirements...\e[0m"
+/bin/echo -e "\e[1;33mInstalling PHP 7.2 And Requirements...\e[0m"
 sleep 5s
 sudo apt install php-fpm php-mysql php-mbstring -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
@@ -300,7 +297,6 @@ sleep 5s
 
 # Move Downloaded PHP.ini To Correct Folder
 /bin/echo -e "\e[1;33mMoving PHP.ini To Correct Folder...\e[0m"
-sleep 5s
 sudo mv Configs/php.ini /etc/php/7.2/fpm/php.ini
 /bin/echo -e "\e[1;32mTransfer Complete!\e[0m"
 echo ""
@@ -452,7 +448,6 @@ echo ""
 sudo mv -v Update-MOTD/* /etc/update-motd.d/
 /bin/echo -e "\e[1;32mMove Complete!\e[0m"
 
-
 echo ""
 
 # Wait 5 Seconds
@@ -470,6 +465,65 @@ sleep 8s
 
 echo ""
 
+# Downloading PHPMyAdmin
+/bin/echo -e "\e[1;33mDownloading & Installing Latest PHPMyAdmin File From Source...\e[0m"
+echo ""
+cd
+cd /usr/share
+wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.zip
+echo ""
+unzip phpMyAdmin-4.9.0.1-all-languages.zip
+mv phpMyAdmin-4.9.0.1-all-languages phpmyadmin
+sudo chown -R www-data:www-data /usr/share/phpmyadmin
+sudo chmod -R 755 /usr/share/phpmyadmin
+echo ""
+/bin/echo -e "\e[1;32mPHPMyAdmin Downloaded & Installed!\e[0m"
+
+cd
+
+# Moving PHPMyAdmin To Laravel Folder
+/bin/echo -e "\e[1;33mMaking PHPMyAdmin Usable With Laravel...\e[0m"
+sudo ln -s /usr/share/phpmyadmin /var/www/laravel/public
+/bin/echo -e "\e[1;32mPHPMyAdmin Available!\e[0m"
+
+echo ""
+
+# Changing PHPMyAdmin Access URL
+# /bin/echo -e "\e[1;33mChanging PHPMyAdmin Access URL...\e[0m"
+# cd /var/www/laravel/public
+# /bin/echo -e "\e[1;33mPlease Choose PHPMyAdmin URL To Use...\e[0m"
+# echo "-->"
+# read $phpma
+# sudo mv phpmyadmin $phpma
+# /bin/echo -e "\e[1;32mURL Changed!\e[0m"
+
+# echo ""
+
+# Disabling Passwordless Login
+# /bin/echo -e "\e[1;33mDisabling PHPMyAdmin Root Access...\e[0m"
+# sudo nano /etc/phpmyadmin/conf.d/pma_secure.php
+# /bin/echo -e "\e[1;32mPasswordless Login Disabled!\e[0m"
+
+echo ""
+
+# Setting Security Page
+/bin/echo -e "\e[1;33mCreating PHPMA Password...\e[0m"
+htpasswd /etc/nginx/.htpasswd infernette
+/bin/echo -e "\e[1;32mPassword Created!\e[0m"
+
+echo ""
+
+# Wait 10 Seconds
+sleep 10s 
+
+# Setting Security Page
+/bin/echo -e "\e[1;33mCreating Secure Login...\e[0m"
+/bin/echo -e "\e[1;33mPaste OpenSSL Key Here...\e[0m"
+sleep 5s
+sudo nano /etc/nginx/pma_pass
+/bin/echo -e "\e[1;32mCreated!\e[0m"
+
+echo ""
 # Create Temp SWAP File
 /bin/echo -e "\e[1;33mCreating Temporary SWAP File...\e[0m"
 sudo fallocate -l 8G /swapfile
@@ -594,63 +648,7 @@ echo ""
 # Wait 5 Seconds
 sleep 5s 
 
-# Downloading PHPMyAdmin
-/bin/echo -e "\e[1;33mDownloading & Installing Latest PHPMyAdmin File From Source...\e[0m"
 echo ""
-cd
-cd /usr/share
-wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.zip
-echo ""
-unzip phpMyAdmin-4.9.0.1-all-languages.zip
-mv phpMyAdmin-4.9.0.1-all-languages phpmyadmin
-sudo chown -R www-data:www-data /usr/share/phpmyadmin
-sudo chmod -R 755 /usr/share/phpmyadmin
-echo ""
-/bin/echo -e "\e[1;32mPHPMyAdmin Downloaded & Installed!\e[0m"
-
-cd
-
-# Wait 5 Seconds
-sleep 5s 
-
-echo ""
-
-# Moving PHPMyAdmin To Laravel Folder
-/bin/echo -e "\e[1;33mMaking PHPMyAdmin Usable With Laravel...\e[0m"
-sudo ln -s /usr/share/phpmyadmin /var/www/laravel/public
-/bin/echo -e "\e[1;32mPHPMyAdmin Available!\e[0m"
-
-echo ""
-
-# Chaning PHPMyAdmin Access URL
-/bin/echo -e "\e[1;33mChanging PHPMyAdmin Access URL...\e[0m"
-cd /var/www/laravel/public
-/bin/echo -e "\e[1;33mPlease Choose PHPMyAdmin URL To Use...\e[0m"
-echo "-->"
-read phpma
-sudo mv phpmyadmin $phpma
-/bin/echo -e "\e[1;32mURL Changed!\e[0m"
-
-echo ""
-
-# Disabling Passwordless Login
-/bin/echo -e "\e[1;33mDisabling PHPMyAdmin Root Access...\e[0m"
-sudo nano /etc/phpmyadmin/conf.d/pma_secure.php
-/bin/echo -e "\e[1;32mPasswordless Login Disabled!\e[0m"
-
-echo ""
-
-# Setting Security Page
-/bin/echo -e "\e[1;33mCreating PHPMA OpenSSL Password...\e[0m"
-openssl passwd
-/bin/echo -e "\e[1;32mPassword Created!\e[0m"
-
-echo ""
-
-# Wait 10 Seconds
-sleep 10s 
-
-sudo nano /etc/nginx/pma_pass
 
 # Adding APP KEY Again Because Fuck Me Thats Why
 /bin/echo -e "\e[1;33mGenerating APP KEY Again Because It Never Works 1st Time...\e[0m"
