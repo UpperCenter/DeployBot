@@ -343,9 +343,11 @@ sudo mv Configs/nginx.conf /etc/nginx/nginx.conf
 echo ""
 /bin/echo -e "\e[1;32mNginx.conf Done!\e[0m"
 sudo mv Configs/mirrorwood.conf /etc/nginx/conf.d/mirrorwood.conf
+sudo rm -rf /etc/nginx/conf.d/default
 echo ""
 /bin/echo -e "\e[1;32mMirrorWood.conf Done!\e[0m"
 echo ""
+sleep 1
 /bin/echo -e "\e[1;32mAll Transfers Complete!\e[0m"
 sleep 6s
 echo ""
@@ -357,6 +359,36 @@ nginx -t | systemctl restart nginx.service
 sleep 8s
 
 echo ""
+
+# Downloading PHP Backup Utility
+/bin/echo -e "\e[1;33mDownloading PHPBU...\e[0m"
+wget http://phar.phpbu.de/phpbu.phar
+chmod +x phpbu.phar
+sudo mv phpbu.phar /usr/local/bin/phpbu
+phpbu --version
+echo ""
+/bin/echo -e "\e[1;32mPHP Backup Utility Installed!\e[0m"
+echo ""
+
+# Wait 5 Seconds
+sleep 5s 
+
+# Creating PHPBU Folder
+/bin/echo -e "\e[1;33mCreating PHPBU Folder...\e[0m"
+sudo mkdir -p /var/www/mysql-backup
+/bin/echo -e "\e[1;32mPHP Backup Utility Folder Created!\e[0m"
+
+echo ""
+
+# Moving PHPBU To Folder
+/bin/echo -e "\e[1;33mMoving PHPBU Config To Correct Folder...\e[0m"
+sudo mv Configs/backup.xml /var/www/mysql-backup/backup.xml
+/bin/echo -e "\e[1;32mMove Complete!\e[0m"
+
+echo ""
+
+# Wait 3 Seconds
+sleep 3s 
 
 # Delete Old Configs Folder
 /bin/echo -e "\e[1;33mRemoving Old Config Folder...\e[0m"
@@ -539,9 +571,181 @@ echo ""
 
 # Clearing Artisan Cache
 /bin/echo -e "\e[1;33mClearing Artisan Cache...\e[0m"
+php artisan config:clear
 php artisan config:cache
 echo ""
 /bin/echo -e "\e[1;32mCache Cleared!\e[0m"
 
 # Wait 5 Seconds
 sleep 5s 
+
+# Restarting Nginx Services
+/bin/echo -e "\e[1;33mRestarting Services...\e[0m"
+systemctl restart nginx.service
+systemctl restart php7.2-fpm.service
+/bin/echo -e "\e[1;32mServices Restarted!\e[0m"
+
+echo ""
+
+figlet MOST SERVER SHIT DONE | lolcat
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s 
+
+# Downloading PHPMyAdmin
+/bin/echo -e "\e[1;33mDownloading & Installing Latest PHPMyAdmin File From Source...\e[0m"
+echo ""
+cd
+cd /usr/share
+wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.zip
+echo ""
+unzip phpMyAdmin-4.9.0.1-all-languages.zip
+mv phpMyAdmin-4.9.0.1-all-languages phpmyadmin
+sudo chown -R www-data:www-data /usr/share/phpmyadmin
+sudo chmod -R 755 /usr/share/phpmyadmin
+echo ""
+/bin/echo -e "\e[1;32mPHPMyAdmin Downloaded & Installed!\e[0m"
+
+cd
+
+# Wait 5 Seconds
+sleep 5s 
+
+echo ""
+
+# Moving PHPMyAdmin To Laravel Folder
+/bin/echo -e "\e[1;33mMaking PHPMyAdmin Usable With Laravel...\e[0m"
+sudo ln -s /usr/share/phpmyadmin /var/www/laravel/public
+/bin/echo -e "\e[1;32mPHPMyAdmin Available!\e[0m"
+
+echo ""
+
+# Chaning PHPMyAdmin Access URL
+/bin/echo -e "\e[1;33mChanging PHPMyAdmin Access URL...\e[0m"
+cd /var/www/laravel/public
+/bin/echo -e "\e[1;33mPlease Choose PHPMyAdmin URL To Use...\e[0m"
+read phpma
+sudo mv phpmyadmin $phpma
+/bin/echo -e "\e[1;32mURL Changed!\e[0m"
+
+# Wait 5 Seconds
+sleep 5s 
+
+# Adding APP KEY Again Because Fuck Me Thats Why
+/bin/echo -e "\e[1;33mGenerating APP KEY Again Because It Never Works 1st Time...\e[0m"
+php artisan key:generate
+echo ""
+php artisan config:clear
+echo ""
+php artisan config:cache
+
+/bin/echo -e "\e[1;32mAPP KEY Added & Cache Cleared!\e[0m"
+
+# Downloading Cron Files
+/bin/echo -e "\e[1;33mGenerating APP KEY Again Because It Never Works 1st Time...\e[0m"
+echo ""
+/bin/echo -e "\e[1;31mEnter Password!!\e[0m"
+cd
+echo "-->"
+read $cron
+git clone $cron
+echo ""
+/bin/echo -e "\e[1;32mCrons Downloaded!\e[0m"
+
+echo ""
+
+# Creating Cron Folder & Moving
+/bin/echo -e "\e[1;33mCreating Cron Folders & Moving...\e[0m"
+sudo mkdir -p /var/www/crons
+sudo mv Crons/* /var/www/crons/*
+/bin/echo -e "\e[1;32mCrons Moved!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s 
+
+# Adding Cron Scripts To Cron
+echo ""
+/bin/echo -e "\e[1;33mInstalling Crons...\e[0m"
+echo ""
+/bin/echo -e "\e[1;31mCOPY THESE NOW!!\e[0m"
+echo ""
+echo ""
+sleep 10
+echo "*/30 * * * *  php /var/www/crons/run_scours.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "*/30 * * * *  php /var/www/crons/run_creche.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "*/5 * * * *  php /var/www/crons/run_battle.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "00 00 * * *  php /var/www/crons/run_contests.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "59 23 * * *  php /var/www/crons/run_raffle_clicks.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "59 23 * * sat  php /var/www/crons/run_clans.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "10 * * * *  php /var/www/crons/run_areas.php > /var/www/crons/logs/errors.log 2>&1"
+
+echo "10 3 * * *  php  /usr/local/bin/phpbu --configuration=/var/www/mysql-backup/backup.xml > /var/www/crons/logs/errors.log 2>&1"
+
+echo "0 2 * * * php /var/www/crons/run_weather > /var/www/crons/logs/errors.log 2>&1"
+
+echo "0 19 * * * php /var/www/crons/run_weather > /var/www/crons/logs/errors.log 2>&1"
+
+sleep 10s
+echo ""
+crontab -e
+echo ""
+/bin/echo -e "\e[1;32mCrontab Updated!\e[0m"
+
+# Cleaning Up Un-needed Files
+/bin/echo -e "\e[1;33mPerforming Final Cleanup...\e[0m"
+cd
+sudo rm /usr/share/phpMyAdmin-4.9.0.1-all-languages.zip
+sudo rm SQL-Backup.sql
+sudo rm -rf Crons/
+sudo rm -rf MirrorWood/
+sudo rm -rf Update-MOTD/
+/bin/echo -e "\e[1;32mFiles Removed!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s 
+
+/bin/echo -e "\e[1;33mPerforming Full Final Reboot In 10 Seconds...\e[0m"
+/bin/echo -e "\e[1;33m10\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;33m9\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;33m8\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;33m7\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;33m6\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;31m5\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;31m4\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;31m3\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;31m2\e[0m"
+sleep 1
+echo ""
+/bin/echo -e "\e[1;31m1\e[0m"
+sleep 1
+echo ""
+
+sudo reboot now
