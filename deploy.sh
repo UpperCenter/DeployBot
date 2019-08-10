@@ -408,7 +408,7 @@ echo ""
 /bin/echo -e "\e[1;33mDownloading MirrorWood Source Code...\e[0m"
 echo ""
 sleep 5s
-/bin/echo -e "\e[1;33mPlease Source Code Config URL:\e[0m"
+/bin/echo -e "\e[1;33mEnter MirrorWood Source Code URL:\e[0m"
 echo "-->"
 read url2
 echo ""
