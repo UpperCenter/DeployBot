@@ -49,13 +49,26 @@ sudo dpkg-reconfigure tzdata
 
 echo ""
 
-# Install Some less Important Tools
+# Install Some Important Tools
 /bin/echo -e "\e[1;33mInstalling Additional Tools...\e[0m"
 sleep 2s
-sudo apt install figlet lolcat update-motd zip unzip fail2ban apache2-utils -y
+sudo apt install figlet lolcat update-motd zip unzip software-properties-common fail2ban apache2-utils -y
 /bin/echo -e "\e[1;32mInstalation Complete!\e[0m"
 
 echo ""
+
+# Installing CertBot Stuff
+/bin/echo -e "\e[1;33mAdding CertBot PPA...\e[0m"
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt install certbot python-certbot-nginx 
+/bin/echo -e "\e[1;32mCertBot PPA Added & Installed!\e[0m"
+
+echo ""
+
+# Wait 5 Seconds
+sleep 5s
 
 # Add the Nginx Signing Key
 /bin/echo -e "\e[1;33mAttempting To Download Nginx Signing Key...\e[0m"
@@ -492,6 +505,20 @@ echo ""
 # Wait 5 Seconds
 sleep 5s 
 
+# Disable Root Login PHPMA
+/bin/echo -e "\e[1;33mDisabling PHPMyAdmin Root Login...\e[0m"
+cd
+cd /usr/share/phpmyadmin
+sudo mv config.sample.inc.php config.inc.php
+/bin/echo -e "\e[1;33mAdd $cfg['Servers'][$i]['AllowRoot'] = FALSE;...\e[0m"
+sleep 8s
+nano config.inc.php
+cd
+systemctl restart nginx.service
+systemctl restart php7.2-fpm.service
+echo ""
+/bin/echo -e "\e[1;32mRoot Login Disabled!\e[0m"
+sleep 2s
 
 echo ""
 # Create Temp SWAP File
@@ -687,6 +714,16 @@ crontab -e
 echo ""
 /bin/echo -e "\e[1;32mCrontab Updated!\e[0m"
 
+echo ""
+
+/bin/echo -e "\e[1;33mInstalling MirrorWood CertBot Certificate...\e[0m"
+sudo certbot --nginx
+echo ""
+/bin/echo -e "\e[1;33mTesting Auto Renew...\e[0m"
+echo ""
+sudo certbot renew --dry-run
+/bin/echo -e "\e[1;32mSSL Certificate Installed & Tested!\e[0m"
+
 # Cleaning Up Un-needed Files
 /bin/echo -e "\e[1;33mPerforming Final Cleanup...\e[0m"
 cd
@@ -735,3 +772,9 @@ sleep 1
 echo ""
 
 sudo reboot now
+
+# TO DO
+# Add CertBot stuff
+# Add Blowfish to PHPMyAdmin
+
+echo ""
