@@ -336,8 +336,6 @@ sleep 5s
 
 # Creating Nginx Log Folders
 /bin/echo -e "\e[1;33mCreating Nginx Log Folders...\e[0m"
-sudo mkdir /var/www
-sleep 2s
 sudo mkdir /var/www/nginx
 /bin/echo -e "\e[1;32mFolders Created!\e[0m"
 echo ""
