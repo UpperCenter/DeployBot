@@ -510,8 +510,8 @@ sleep 5s
 cd
 cd /usr/share/phpmyadmin
 sudo mv config.sample.inc.php config.inc.php
-/bin/echo -e "\e[1;33mAdd $cfg['Servers'][$i]['AllowRoot'] = FALSE;...\e[0m"
-sleep 8s
+/bin/echo -e "\e[1;33mAdd $cfg['Servers'][$i]['AllowRoot'] = FALSE; AND BLOWFISH FROM https://www.question-defense.com/tools/phpmyadmin-blowfish-secret-generator\e[0m"
+sleep 10s
 nano config.inc.php
 cd
 systemctl restart nginx.service
@@ -724,6 +724,8 @@ echo ""
 sudo certbot renew --dry-run
 /bin/echo -e "\e[1;32mSSL Certificate Installed & Tested!\e[0m"
 
+echo ""
+
 # Cleaning Up Un-needed Files
 /bin/echo -e "\e[1;33mPerforming Final Cleanup...\e[0m"
 cd
@@ -772,9 +774,3 @@ sleep 1
 echo ""
 
 sudo reboot now
-
-# TO DO
-# Add CertBot stuff
-# Add Blowfish to PHPMyAdmin
-
-echo ""
